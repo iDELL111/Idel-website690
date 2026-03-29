@@ -589,9 +589,11 @@ const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.
 document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
 
 /* PRESS LIGHT */
-function spawnLight(x,y){const l=document.createElement('div');l.className='press-light';l.style.left=x+'px';l.style.top=y+'px';const p=Math.random()>.5;l.style.background=p?'radial-gradient(circle,rgba(253,16,94,.5),rgba(253,16,94,.12) 45%,transparent 70%)':'radial-gradient(circle,rgba(0,122,255,.5),rgba(0,122,255,.12) 45%,transparent 70%)';document.body.appendChild(l);setTimeout(()=>l.remove(),520);}
-window.addEventListener('click',e=>{if(!e.target.closest('#gameCanvas')&&!e.target.closest('#music-player'))spawnLight(e.clientX,e.clientY);});
-window.addEventListener('touchstart',e=>{if(!e.target.closest('#gameCanvas')&&!e.target.closest('#music-player')){const t=e.touches[0];spawnLight(t.clientX,t.clientY);}},{passive:true});
+/* TAP = Ghost (#F8F8FF) + Parchment (#FAF0E6) | SCROLL = Periwinkle (#CCCCFF) */
+function spawnLight(x,y,type){const l=document.createElement('div');l.className='press-light';l.style.left=x+'px';l.style.top=y+'px';if(type==='scroll'){l.style.background='radial-gradient(circle,rgba(204,204,255,.7),rgba(204,204,255,.25) 45%,transparent 70%)';}else{const p=Math.random()>.5;l.style.background=p?'radial-gradient(circle,rgba(248,248,255,.9),rgba(250,240,230,.5) 45%,transparent 70%)':'radial-gradient(circle,rgba(250,240,230,.9),rgba(248,248,255,.5) 45%,transparent 70%)';}document.body.appendChild(l);setTimeout(()=>l.remove(),520);}
+window.addEventListener('click',e=>{if(!e.target.closest('#gameCanvas')&&!e.target.closest('#music-player'))spawnLight(e.clientX,e.clientY,'tap');});
+window.addEventListener('touchstart',e=>{if(!e.target.closest('#gameCanvas')&&!e.target.closest('#music-player')){const t=e.touches[0];spawnLight(t.clientX,t.clientY,'tap');}},{passive:true});
+let _lastScrollY=window.scrollY,_scrollTimer;window.addEventListener('scroll',()=>{const dy=Math.abs(window.scrollY-_lastScrollY);if(dy>8){const rx=50+Math.random()*(window.innerWidth-100);const ry=100+Math.random()*(window.innerHeight-200);spawnLight(rx,ry,'scroll');}clearTimeout(_scrollTimer);_scrollTimer=setTimeout(()=>{_lastScrollY=window.scrollY;},80);},{passive:true});
 
 /* FCARD GLOW */
 document.querySelectorAll('.fcard').forEach(c=>{
