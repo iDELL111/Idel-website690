@@ -581,7 +581,8 @@ const prog=document.getElementById('prog');
 window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';},{passive:true});
 
 /* REVEAL */
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.1});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>el.classList.add('on'));
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:0});
 document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>io.observe(el));
 
 /* PRESS LIGHT */
@@ -822,7 +823,7 @@ window.siSend=async function(){
     siRemoveThinking();
 
     if(data.error){
-      siShowError('API error: '+（data.error.message||data.error||'Unknown error'));
+      siShowError('API error: ' + (data.error.message||data.error||'Unknown error'));
       siLoading=false;document.getElementById('si-send').disabled=false;return;
     }
 
